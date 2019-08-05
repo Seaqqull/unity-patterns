@@ -348,7 +348,7 @@ GameObject:
   - component: {fileID: 1357721802}
   - component: {fileID: 1357721801}
   m_Layer: 0
-  m_Name: SingletonChildFirst (Will survive)
+  m_Name: SingletonChildFirst (First)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -391,7 +391,7 @@ GameObject:
   - component: {fileID: 2068284155}
   - component: {fileID: 2068284154}
   m_Layer: 0
-  m_Name: SingletonChildFirst (Will be destroyed)
+  m_Name: SingletonChildFirst (Second)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
