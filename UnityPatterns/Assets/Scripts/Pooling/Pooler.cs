@@ -15,7 +15,7 @@ public abstract class Pooler : MonoBehaviour
     protected GameObject _queue;
     
 
-    private void Awake()
+    public virtual void Awake()
     {
         if ((_spawnObject == null) ||
             (_spawnObject.GetComponent<IPoolable>()) == null)
