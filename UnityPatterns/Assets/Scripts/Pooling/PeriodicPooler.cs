@@ -1,11 +1,13 @@
 ﻿using System.Collections;
 using UnityEngine;
 
-public class CyclicPooler : Pooler
+public class PeriodicPooler : Pooler
 {
     [SerializeField] private float _spawnPeriod = 1;
-
+    [SerializeField] private bool _isEndless = true;
+    
     private Coroutine _poolCoroutine;
+    private int _pooledAmount;
 
     private void OnEnable()
     {
@@ -23,6 +25,7 @@ public class CyclicPooler : Pooler
         if (isActive)
         {
             _poolCoroutine = StartCoroutine("PoolPerforming", _spawnPeriod);
+            _pooledAmount = 0;
         }
         else if ((!isActive) && (_poolCoroutine != null))
         {
@@ -36,7 +39,26 @@ public class CyclicPooler : Pooler
         {
             yield return new WaitForSeconds(delay);
 
-            Pool();
+            if (_isEndless)
+            {
+                Pool();
+            }            
+            else if (_pooledAmount < _poolAmount)
+            {
+                Pool();
+                _pooledAmount++;
+            }
+            
+        }
+    }
+
+
+    public void ResetPool()
+    {
+        _pooledAmount = 0;
+        for (int i = 0; i < _poolAmount; i++)
+        {
+            PoolCreate();
         }
     }
 }

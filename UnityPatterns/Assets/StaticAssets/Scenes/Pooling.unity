@@ -1277,6 +1277,7 @@ MonoBehaviour:
   _expansionAmount: 5
   _reductionAmount: 10
   _spawnPeriod: 0.25
+  _isEndless: 0
 --- !u!1 &1781602878
 GameObject:
   m_ObjectHideFlags: 0
