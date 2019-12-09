@@ -26,7 +26,7 @@ public abstract class SetSO<T, Y> : ScriptableObject where T : Item<Y>
 
     public void Remove(T item)
     {
-        if (!_items.Contains(item))
+        if (_items.Contains(item))
             _items.Remove(item);
     }
 }

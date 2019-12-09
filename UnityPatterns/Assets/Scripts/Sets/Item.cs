@@ -12,6 +12,6 @@ public abstract class Item<T> : MonoBehaviour
 
     private void OnDisable()
     {
-        Set.Add(this);
+        Set.Remove(this);
     }
 }
