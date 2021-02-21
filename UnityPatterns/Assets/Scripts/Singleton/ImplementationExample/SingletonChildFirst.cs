@@ -1,8 +1,7 @@
 ﻿using UnityEngine;
 
 
-
-namespace UnityPatterns.Singletons
+namespace UnityPatterns.Singletons.Implementation
 {
     public class SingletonChildFirst : Singleton<SingletonChildFirst>
     {
