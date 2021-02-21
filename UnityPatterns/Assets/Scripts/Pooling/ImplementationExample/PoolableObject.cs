@@ -1,51 +1,55 @@
 ﻿using UnityEngine;
 
-public class PoolableObject : MonoBehaviour, IPoolable
+
+namespace UnityPatterns.Pooling.Implementation
 {
-    public float upForce = 1;
-    public float sideForce = 1;
-    public float lifeTime = 10;
-
-    private Pooler _poolController;
-
-    public Pooler Pooler { get => _poolController; set => _poolController = value; }
-
-    // This type of object always initialized
-    public bool IsInitializationBuilt => true;
-
-
-    private void Die()
+    public class PoolableObject : MonoBehaviour, IPoolable
     {
-        PoolIn();
-    }
+        public float upForce = 1;
+        public float sideForce = 1;
+        public float lifeTime = 10;
+
+        private Pooler _poolController;
+
+        public Pooler Pooler { get => _poolController; set => _poolController = value; }
+
+        // This type of object always initialized
+        public bool IsInitializationBuilt => true;
 
 
-    public void PoolIn()
-    {
-        gameObject.SetActive(false);
-        
-        Pooler.AddToPool(gameObject);
-    }
+        private void Die()
+        {
+            PoolIn();
+        }
 
-    public void PoolOut()
-    {
-        float xForce = Random.Range(-sideForce, sideForce);
-        float yForce = Random.Range(upForce / 2f, upForce);
-        float zForce = Random.Range(-sideForce, sideForce);
 
-        Vector3 force = new Vector3(xForce, yForce, zForce);
-        GetComponent<Rigidbody>().velocity = force;
+        public void PoolIn()
+        {
+            gameObject.SetActive(false);
 
-        Invoke("Die", lifeTime);
-    }
+            Pooler.AddToPool(gameObject);
+        }
 
-    public void PoolInitialize()
-    {
-        // Nothing to do here
-    }
+        public void PoolOut()
+        {
+            float xForce = Random.Range(-sideForce, sideForce);
+            float yForce = Random.Range(upForce / 2f, upForce);
+            float zForce = Random.Range(-sideForce, sideForce);
 
-    public void BuildInitialization()
-    {
-        // Nothing to do here
+            Vector3 force = new Vector3(xForce, yForce, zForce);
+            GetComponent<Rigidbody>().velocity = force;
+
+            Invoke("Die", lifeTime);
+        }
+
+        public void PoolInitialize()
+        {
+            // Nothing to do here
+        }
+
+        public void BuildInitialization()
+        {
+            // Nothing to do here
+        }
     }
 }

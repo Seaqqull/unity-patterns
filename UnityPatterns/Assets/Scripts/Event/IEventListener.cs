@@ -1,14 +1,18 @@
 ﻿using UnityEngine.Events;
 
-public interface IEventListener
+
+namespace UnityPatterns.Events
 {
-    EventSO Event { get; }
+    public interface IEventListener
+    {
+        EventSO Event { get; }
 
-    UnityEvent Response { get; }
+        UnityEvent Response { get; }
 
-    void OnEnable();
+        void OnEnable();
 
-    void OnDisable();
+        void OnDisable();
 
-    void OnEventRaised();    
+        void OnEventRaised();
+    }
 }

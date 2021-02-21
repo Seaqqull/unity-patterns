@@ -1,41 +1,45 @@
 ﻿using UnityEngine.Events;
 using UnityEngine;
 
-public class EventPooler : Pooler, IEventListener
+
+namespace UnityPatterns.Pooling
 {
-    [SerializeField] private EventSO _event;
-
-    private UnityEvent _response = new UnityEvent();
-
-    public EventSO Event { get => _event; }
-    public UnityEvent Response { get => _response; }
-
-
-    public void OnEnable()
+    public class EventPooler : Pooler, Events.IEventListener
     {
-        if (Event == null) return;
+        [SerializeField] private Events.EventSO _event;
 
-        Event.RegisterListener(this);        
-    }
+        private UnityEvent _response = new UnityEvent();
 
-    public void OnDisable()
-    {
-        if (Event == null) return;
-
-        Event.UnregisterListener(this);
-    }
-
-    public override void Awake()
-    {
-        base.Awake();
-
-        if (Event != null)
-            Response.AddListener(() => this.Pool());
-    }
+        public Events.EventSO Event { get => _event; }
+        public UnityEvent Response { get => _response; }
 
 
-    public void OnEventRaised()
-    {
-        Response.Invoke();
+        public void OnEnable()
+        {
+            if (Event == null) return;
+
+            Event.RegisterListener(this);
+        }
+
+        public void OnDisable()
+        {
+            if (Event == null) return;
+
+            Event.UnregisterListener(this);
+        }
+
+        public override void Awake()
+        {
+            base.Awake();
+
+            if (Event != null)
+                Response.AddListener(() => this.Pool());
+        }
+
+
+        public void OnEventRaised()
+        {
+            Response.Invoke();
+        }
     }
 }

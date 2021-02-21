@@ -1,21 +1,24 @@
 ﻿using UnityEngine;
 
-[CreateAssetMenu(menuName = "ToDo/Simple")]
-public class SimpleToDoSO : SetToDoSO<SimpleItem>
+
+namespace UnityPatterns.Sets.Implementation
 {
-    [Range(0, 10)] public int minSize;
-    [Range(0, 10)] public int maxSize;
-    [SerializeField] protected new SimpleSetSO _set;
-
-
-    public override void ToDo()
+    [CreateAssetMenu(menuName = "ToDo/Simple")]
+    public class SimpleToDoSO : SetToDoSO<SimpleItem>
     {
-        if (minSize > maxSize) return;
+        [Range(0, 10)] public int minSize;
+        [Range(0, 10)] public int maxSize;
 
-        for (int i = 0; i < _set.Items.Count; i++)
+
+        public override void ToDo()
         {
-            _set.Items[i].transform.localScale = new 
-                Vector3(Random.Range(minSize, maxSize), Random.Range(minSize, maxSize), Random.Range(minSize, maxSize));
+            if (minSize > maxSize) return;
+
+            for (int i = 0; i < _set.Items.Count; i++)
+            {
+                _set.Items[i].transform.localScale = new
+                    Vector3(Random.Range(minSize, maxSize), Random.Range(minSize, maxSize), Random.Range(minSize, maxSize));
+            }
         }
     }
 }

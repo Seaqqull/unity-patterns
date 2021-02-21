@@ -1,13 +1,17 @@
 ﻿
 
-public interface IPoolable
+
+namespace UnityPatterns.Pooling
 {
-    bool IsInitializationBuilt { get; }
-    Pooler Pooler { get; set; }
+    public interface IPoolable
+    {
+        bool IsInitializationBuilt { get; }
+        Pooler Pooler { get; set; }
 
 
-    void PoolIn();
-    void PoolOut();
-    void PoolInitialize();
-    void BuildInitialization();
+        void PoolIn();
+        void PoolOut();
+        void PoolInitialize();
+        void BuildInitialization();
+    }
 }

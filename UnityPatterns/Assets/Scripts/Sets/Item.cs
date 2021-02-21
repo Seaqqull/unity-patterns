@@ -1,17 +1,21 @@
 ﻿using UnityEngine;
 
-public abstract class Item<T> : MonoBehaviour
-{  
-    protected abstract SetSO<Item<T>, T> Set { get; }
 
-
-    private void OnEnable()
+namespace UnityPatterns.Sets
+{
+    public abstract class Item<T> : MonoBehaviour
     {
-        Set.Add(this);
-    }
+        protected abstract SetSO<Item<T>, T> Set { get; }
 
-    private void OnDisable()
-    {
-        Set.Remove(this);
+
+        private void OnEnable()
+        {
+            Set.Add(this);
+        }
+
+        private void OnDisable()
+        {
+            Set.Remove(this);
+        }
     }
 }

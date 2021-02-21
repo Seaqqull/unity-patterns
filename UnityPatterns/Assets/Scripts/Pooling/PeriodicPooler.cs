@@ -1,64 +1,68 @@
 ﻿using System.Collections;
 using UnityEngine;
 
-public class PeriodicPooler : Pooler
+
+namespace UnityPatterns.Pooling
 {
-    [SerializeField] private float _spawnPeriod = 1;
-    [SerializeField] private bool _isEndless = true;
-    
-    private Coroutine _poolCoroutine;
-    private int _pooledAmount;
-
-    private void OnEnable()
+    public class PeriodicPooler : Pooler
     {
-        SetIsActive(true);
-    }
+        [SerializeField] private float _spawnPeriod = 1;
+        [SerializeField] private bool _isEndless = true;
 
-    private void OnDisable()
-    {
-        SetIsActive(false);
-    }
+        private Coroutine _poolCoroutine;
+        private int _pooledAmount;
 
-
-    private void SetIsActive(bool isActive)
-    {
-        if (isActive)
+        private void OnEnable()
         {
-            _poolCoroutine = StartCoroutine("PoolPerforming", _spawnPeriod);
-            _pooledAmount = 0;
+            SetIsActive(true);
         }
-        else if ((!isActive) && (_poolCoroutine != null))
+
+        private void OnDisable()
         {
-            StopCoroutine(_poolCoroutine);
+            SetIsActive(false);
         }
-    }
 
-    private IEnumerator PoolPerforming(float delay)
-    {
-        while (true)
+
+        private void SetIsActive(bool isActive)
         {
-            yield return new WaitForSeconds(delay);
-
-            if (_isEndless)
+            if (isActive)
             {
-                Pool();
-            }            
-            else if (_pooledAmount < _poolAmount)
-            {
-                Pool();
-                _pooledAmount++;
+                _poolCoroutine = StartCoroutine("PoolPerforming", _spawnPeriod);
+                _pooledAmount = 0;
             }
-            
+            else if ((!isActive) && (_poolCoroutine != null))
+            {
+                StopCoroutine(_poolCoroutine);
+            }
         }
-    }
 
-
-    public void ResetPool()
-    {
-        _pooledAmount = 0;
-        for (int i = 0; i < _poolAmount; i++)
+        private IEnumerator PoolPerforming(float delay)
         {
-            PoolCreate();
+            while (true)
+            {
+                yield return new WaitForSeconds(delay);
+
+                if (_isEndless)
+                {
+                    Pool();
+                }
+                else if (_pooledAmount < _poolAmount)
+                {
+                    Pool();
+                    _pooledAmount++;
+                }
+
+            }
+        }
+
+
+        public void ResetPool()
+        {
+            _pooledAmount = 0;
+            for (int i = 0; i < _poolAmount; i++)
+            {
+                PoolCreate();
+            }
         }
     }
 }

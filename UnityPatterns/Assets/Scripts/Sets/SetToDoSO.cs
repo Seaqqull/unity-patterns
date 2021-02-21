@@ -1,9 +1,13 @@
 ﻿using UnityEngine;
 
-public abstract class SetToDoSO<T> : ScriptableObject where T : Item<T>
+
+namespace UnityPatterns.Sets
 {
-    [SerializeField] protected SetSO<Item<T>, T> _set;
+    public abstract class SetToDoSO<T> : ScriptableObject where T : Item<T>
+    {
+        [SerializeField] protected SetSO<Item<T>, T> _set;
 
 
-    public abstract void ToDo();
+        public abstract void ToDo();
+    }
 }

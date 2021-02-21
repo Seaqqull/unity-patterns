@@ -1,59 +1,63 @@
 ﻿using UnityEngine;
 
-public class Singleton<T> : MonoBehaviour
+
+namespace UnityPatterns.Singletons
 {
-    protected static Singleton<T> _instance;
-
-    private bool _dataInitialized;
-
-    /// <summary>
-    /// Instance of each Singleton<T> class
-    /// </summary>
-    public static Singleton<T> Instance
+    public class Singleton<T> : MonoBehaviour
     {
-        get
+        protected static Singleton<T> _instance;
+
+        private bool _dataInitialized;
+
+        /// <summary>
+        /// Instance of each Singleton<T> class
+        /// </summary>
+        public static Singleton<T> Instance
         {
-            if (_instance != null) return _instance;
+            get
+            {
+                if (_instance != null) return _instance;
 
-            GameObject instance = new GameObject(typeof(T).ToString(), typeof(T));
-            instance.transform.SetAsFirstSibling();
+                GameObject instance = new GameObject(typeof(T).ToString(), typeof(T));
+                instance.transform.SetAsFirstSibling();
 
-            _instance = instance.GetComponent<Singleton<T>>();
+                _instance = instance.GetComponent<Singleton<T>>();
 
-            if (!_instance._dataInitialized)
-                _instance.AdditionalInitialization();
+                if (!_instance._dataInitialized)
+                    _instance.AdditionalInitialization();
 
-            return _instance;
+                return _instance;
+            }
         }
-    }
 
 
-    protected void Awake()
-    {
-        if (_instance == null)
+        protected void Awake()
         {
-            _instance = this;
-            if (!_dataInitialized) AdditionalInitialization();
+            if (_instance == null)
+            {
+                _instance = this;
+                if (!_dataInitialized) AdditionalInitialization();
+            }
+            else
+            {
+                Destroy(gameObject);
+            }
         }
-        else
+
+        /// <summary>
+        /// Child classes will have additional initialization operations
+        /// </summary>
+        protected virtual void AdditionalInitialization()
         {
-            Destroy(gameObject);
+            _dataInitialized = true;
+            Debug.Log("Singleton: initialization");
         }
+
+
+        public virtual void SomeMethod()
+        {
+            Debug.Log("Singleton: method call ");
+        }
+
     }
-
-    /// <summary>
-    /// Child classes will have additional initialization operations
-    /// </summary>
-    protected virtual void AdditionalInitialization()
-    {
-        _dataInitialized = true;
-        Debug.Log("Singleton: initialization");
-    }
-
-
-    public virtual void SomeMethod()
-    {
-        Debug.Log("Singleton: method call ");
-    }
-
 }

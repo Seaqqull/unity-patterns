@@ -1,17 +1,21 @@
 ﻿using UnityEngine;
 
-public class SingletonChildSecond : Singleton<SingletonChildSecond>
+
+namespace UnityPatterns.Singletons.Implementation
 {
-    protected override void AdditionalInitialization()
+    public class SingletonChildSecond : Singleton<SingletonChildSecond>
     {
-        base.AdditionalInitialization();
-        Debug.Log("Second child: initialization");
+        protected override void AdditionalInitialization()
+        {
+            base.AdditionalInitialization();
+            Debug.Log("Second child: initialization");
+        }
+
+
+        public override void SomeMethod()
+        {
+            Debug.Log("Second child: call method");
+        }
+
     }
-
-
-    public override void SomeMethod()
-    {
-        Debug.Log("Second child: call method");
-    }
-
 }
