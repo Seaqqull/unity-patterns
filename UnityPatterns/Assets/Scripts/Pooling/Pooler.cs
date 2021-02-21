@@ -1,8 +1,12 @@
 ﻿using System.Collections.Generic;
 using UnityEngine;
 
+
 public abstract class Pooler : MonoBehaviour
 {
+    [SerializeField] protected int _idGameObject;
+
+
     [SerializeField] protected Transform _spawnPosition;
     [SerializeField] protected GameObject _spawnObject;
 
@@ -10,22 +14,28 @@ public abstract class Pooler : MonoBehaviour
     [SerializeField] protected int _expansionAmount = 1;
     [SerializeField] protected int _reductionAmount = 1;
 
-    protected Queue<GameObject> _objectsPool;
+    protected Queue<GameObject> _objectsToPool;
     protected GameObject _spawned;
     protected GameObject _queue;
     
+    public int GameObjectId
+    { 
+        get { return this._idGameObject; }
+    }
+
+
 
     public virtual void Awake()
     {
-        if ((_spawnObject == null) ||
-            (_spawnObject.GetComponent<IPoolable>()) == null)
+        if ((_spawnObject is null) ||
+            (_spawnObject.GetComponent<IPoolable>()) is null)
         {
 #if UNITY_EDITOR
             Debug.LogError("Poolable object doesn't have IPoolable member or object is empty", gameObject);
 #endif
             return;
         }
-        if (_spawnPosition == null) _spawnPosition = transform;
+        if (_spawnPosition is null) _spawnPosition = transform;
 
         _spawned = new GameObject("Spawned");
         _queue = new GameObject("Queue");
@@ -33,26 +43,42 @@ public abstract class Pooler : MonoBehaviour
         _spawned.transform.parent = transform;
         _queue.transform.parent = transform;
 
-        _objectsPool = new Queue<GameObject>();
+        _objectsToPool = new Queue<GameObject>();
 
-        for (int i = 0; i < _poolAmount; i++)
-        {
-            PoolCreate();
-        }
+        PoolExtend(_poolAmount);
     }
 
 
     /// <summary> 
-    /// Instantiate object and adds it too pool
+    /// Instantiates object and adds it too pool
     /// </summary>
     protected virtual void PoolCreate()
     {
-        GameObject obj = Instantiate(_spawnObject);
+        GameObject dummyIn = Instantiate(_spawnObject);
 
-        obj.GetComponent<IPoolable>().Pooler = this;
-        obj.transform.parent = _queue.transform;        
+        if (dummyIn.TryGetComponent<IPoolable>(out IPoolable poolableDummy))
+        {
+            poolableDummy.Pooler = this;
+            if (!poolableDummy.IsInitializationBuilt)
+                poolableDummy.BuildInitialization();
+        }
 
-        _objectsPool.Enqueue(obj);
+        dummyIn.transform.parent = _queue.transform;
+        dummyIn.SetActive(false);
+
+        _objectsToPool.Enqueue(dummyIn);
+    }
+
+    /// <summary>
+    /// Instantiates [amount] of given objects and inserts into the queue
+    /// </summary>
+    /// <param name="amount">Amount of items to be instantiated and inserted into the queue</param>
+    protected void PoolExtend(int amount)
+    {
+        for (int i = 0; i < amount; i++)
+        {
+            PoolCreate();
+        }
     }
 
     /// <summary>
@@ -60,54 +86,64 @@ public abstract class Pooler : MonoBehaviour
     /// </summary>
     protected virtual GameObject PoolOut()
     {        
-        GameObject obj = _objectsPool.Dequeue();
+        GameObject dummyOut = _objectsToPool.Dequeue();
 
-        obj.transform.position = _spawnPosition.position;
-        obj.transform.parent = _spawned.transform;        
-        obj.SetActive(true);
+        var dummyTransform = dummyOut.transform;
+        dummyTransform.position = _spawnPosition.position;
+        dummyTransform.parent = _spawned.transform;
+        
+        dummyOut.SetActive(true);
 
-        return obj;
+        return dummyOut;
     }
 
     /// <summary>
     /// Adds object to pool
     /// </summary>
-    /// <param name="obj">Object to be added</param>
-    protected virtual void PoolIn(GameObject obj)
+    /// <param name="dummyIn">Object to be added</param>
+    protected virtual void PoolIn(GameObject dummyIn)
     {
-        obj.SetActive(false);
-        obj.transform.parent = _queue.transform;
+        dummyIn.SetActive(false);
 
-        _objectsPool.Enqueue(obj);
+        var dummyTransform = dummyIn.transform;
+        dummyTransform.parent = _queue.transform;
+        dummyTransform.position = Vector3.zero;
+
+        _objectsToPool.Enqueue(dummyIn);
     }
 
 
     public GameObject Pool()
     {
-        if (_spawnObject == null) return null;
+        if (_spawnObject is null) return null;
 
-        if (_objectsPool.Count == 0)
+        if (_objectsToPool.Count == 0)
+            PoolExtend(_expansionAmount);
+
+        GameObject dummyOut = PoolOut();
+        if (dummyOut.TryGetComponent<IPoolable>(out IPoolable poolableDummy))
         {
-            for (int i = 0; i < _expansionAmount; i++)
-            {
-                PoolCreate();
-            }
+            poolableDummy.PoolInitialize();
+            poolableDummy.PoolOut();
         }
 
-        return PoolOut();
+        return dummyOut;
     }
 
-    public void AddToPool(GameObject obj)
+    public void AddToPool(GameObject dummyIn)
     {
-        if (_objectsPool.Count >= (_poolAmount + _reductionAmount))
-        {
-            for (int i = 0; i < _reductionAmount; i++)
+        int deletionAmount = _reductionAmount - 1;
+
+        if (_objectsToPool.Count >= (_poolAmount + deletionAmount))
+        {            
+            for (int i = 0; i < deletionAmount; i++)
             {
-                Destroy(PoolOut());
+                Destroy(_objectsToPool.Dequeue());
             }
+            Destroy(dummyIn);
+            return;
         }
 
-        PoolIn(obj);
+        PoolIn(dummyIn);
     }
-
 }
