@@ -10,11 +10,8 @@ public class PoolableObject : MonoBehaviour, IPoolable
 
     public Pooler Pooler { get => _poolController; set => _poolController = value; }
 
-
-    private void OnEnable()
-    {
-        PoolOut();
-    }
+    // This type of object always initialized
+    public bool IsInitializationBuilt => true;
 
 
     private void Die()
@@ -42,4 +39,13 @@ public class PoolableObject : MonoBehaviour, IPoolable
         Invoke("Die", lifeTime);
     }
 
+    public void PoolInitialize()
+    {
+        // Nothing to do here
+    }
+
+    public void BuildInitialization()
+    {
+        // Nothing to do here
+    }
 }
