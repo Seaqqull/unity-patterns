@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _speed: 100
-  _range: 100
+  _range: 125
   _lookRotation: 0
 --- !u!1001 &3380509646992904769
 PrefabInstance:
