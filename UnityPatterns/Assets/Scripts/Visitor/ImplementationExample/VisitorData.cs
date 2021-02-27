@@ -3,7 +3,7 @@
 
 namespace UnityPatterns.Visitor.Implementation.Data
 {
-    public interface WallHolder
+    public interface IWallHolder
     {        
         public void Interfare(LaserBullet bullet);
         public void Interfare(SimpleBullet bullet);
@@ -11,8 +11,8 @@ namespace UnityPatterns.Visitor.Implementation.Data
     }
 
 
-    public interface Bullet
+    public interface IBullet
     {
-        public void InterfareWall(WallHolder wall);
+        public void InterfareWall(IWallHolder wall);
     }
 }

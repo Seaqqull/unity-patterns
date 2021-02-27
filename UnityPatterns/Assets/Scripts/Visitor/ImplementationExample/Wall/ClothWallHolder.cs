@@ -3,7 +3,7 @@ using UnityEngine;
 
 namespace UnityPatterns.Visitor.Implementation
 {
-    public class ClothWallHolder : MonoBehaviour, Data.WallHolder
+    public class ClothWallHolder : MonoBehaviour, Data.IWallHolder
     {
         [SerializeField] [Range(-5.0f, 5.0f)] private float _slowdownSpeed = 0.5f;
 

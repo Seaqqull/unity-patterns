@@ -3,7 +3,7 @@ using UnityEngine;
 
 namespace UnityPatterns.Visitor.Implementation
 {
-    public abstract class Bullet : MonoBehaviour, Data.Bullet
+    public abstract class Bullet : MonoBehaviour, Data.IBullet
     {
         [SerializeField] protected float _speed;
         [SerializeField] protected float _range;
@@ -103,6 +103,6 @@ namespace UnityPatterns.Visitor.Implementation
         /// Visitor's interaction method
         /// </summary>
         /// <param name="wall">Specific visitor</param>
-        public abstract void InterfareWall(Data.WallHolder wall);
+        public abstract void InterfareWall(Data.IWallHolder wall);
     }
 }

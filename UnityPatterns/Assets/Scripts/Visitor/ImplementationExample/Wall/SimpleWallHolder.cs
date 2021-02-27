@@ -3,7 +3,7 @@ using UnityEngine;
 
 namespace UnityPatterns.Visitor.Implementation
 {
-    public class SimpleWallHolder : MonoBehaviour, Data.WallHolder
+    public class SimpleWallHolder : MonoBehaviour, Data.IWallHolder
     {
         [SerializeField] [Range(-5.0f, 5.0f)] private float _impactAmount = 0.5f;
 

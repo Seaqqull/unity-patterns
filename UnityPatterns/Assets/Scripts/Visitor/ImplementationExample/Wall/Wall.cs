@@ -7,20 +7,20 @@ namespace UnityPatterns.Visitor.Implementation
     public class Wall : MonoBehaviour
     {
         protected Collider _collider;
-        protected Data.WallHolder _holder;
+        protected Data.IWallHolder _holder;
 
         
         private void Awake()
         {
             _collider = GetComponent<Collider>();
-            _holder = GetComponent<Data.WallHolder>();
+            _holder = GetComponent<Data.IWallHolder>();
         }
 
         public void OnTriggerEnter(Collider other)
         {
             var affectedEntity = other.gameObject;
 
-            if (affectedEntity.TryGetComponent<Data.Bullet>(out var affectedBullet))
+            if (affectedEntity.TryGetComponent<Data.IBullet>(out var affectedBullet))
             {
                 affectedBullet.InterfareWall(_holder);
             }
