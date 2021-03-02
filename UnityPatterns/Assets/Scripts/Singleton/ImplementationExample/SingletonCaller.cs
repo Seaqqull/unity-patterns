@@ -12,6 +12,7 @@ namespace UnityPatterns.Singletons.Implementation
 
             Debug.Log("Second child: call");
             SingletonChildSecond.Instance.SomeMethod();
+            SingletonChildSecond.Instance.SomeAdditionalMethod();
         }
     }
 }

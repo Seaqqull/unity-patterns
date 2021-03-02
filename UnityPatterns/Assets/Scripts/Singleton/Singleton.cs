@@ -3,16 +3,16 @@
 
 namespace UnityPatterns.Singletons
 {
-    public class Singleton<T> : MonoBehaviour
+    public class Singleton<T> : MonoBehaviour where T : Singleton<T>
     {
-        protected static Singleton<T> _instance;
+        protected static T _instance;
 
         private bool _dataInitialized;
 
         /// <summary>
         /// Instance of each Singleton<T> class
         /// </summary>
-        public static Singleton<T> Instance
+        public static T Instance
         {
             get
             {
@@ -21,7 +21,7 @@ namespace UnityPatterns.Singletons
                 GameObject instance = new GameObject(typeof(T).ToString(), typeof(T));
                 instance.transform.SetAsFirstSibling();
 
-                _instance = instance.GetComponent<Singleton<T>>();
+                _instance = instance.GetComponent<T>();
 
                 if (!_instance._dataInitialized)
                     _instance.AdditionalInitialization();
@@ -35,7 +35,7 @@ namespace UnityPatterns.Singletons
         {
             if (_instance == null)
             {
-                _instance = this;
+                _instance = (T)this;
                 if (!_dataInitialized) AdditionalInitialization();
             }
             else
