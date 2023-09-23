@@ -4,7 +4,7 @@ using TMPro;
 using UnityEngine;
 
 
-namespace Creattional.Prototype
+namespace Creational.Prototype
 {
     public class EntityCloner : MonoBehaviour, IPrototype<Entity>
     {

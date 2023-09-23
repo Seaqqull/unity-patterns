@@ -1,4 +1,4 @@
-namespace Creattional.Prototype
+namespace Creational.Prototype
 {
     public interface IPrototype<T>
     {

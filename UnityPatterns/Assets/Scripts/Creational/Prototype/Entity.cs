@@ -1,7 +1,7 @@
 using UnityEngine;
 
 
-namespace Creattional.Prototype
+namespace Creational.Prototype
 {
     public class Entity : MonoBehaviour, IPrototype<Entity>
     {
