@@ -1,7 +1,7 @@
 ﻿using UnityEngine;
 
 
-namespace UnityPatterns.Singletons.Implementation
+namespace Creational.Singleton.Implementation
 {
     public class SingletonCaller : MonoBehaviour
     {

@@ -1,7 +1,7 @@
 ﻿using UnityEngine;
 
 
-namespace UnityPatterns.Singletons
+namespace Creational.Singleton
 {
     public class Singleton<T> : MonoBehaviour where T : Singleton<T>
     {
